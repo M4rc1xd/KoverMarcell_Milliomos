@@ -28,7 +28,7 @@ namespace Milliomos
                 valasz = Console.ReadLine().ToLower().Trim();
                 if(valasz == "i"){
                     validInput = true;
-                    tutorial();
+                    tutorialKerdes();
                 }
                 else if(valasz == "n"){
                     validInput = true;
@@ -39,7 +39,8 @@ namespace Milliomos
             }
         }
 
-        static void tutorial(){
+        static void tutorialKerdes()
+        {
             elsoSor();
             Console.ForegroundColor = ConsoleColor.Green;
             System.Console.WriteLine("Tutorial elindítva");
@@ -61,11 +62,13 @@ namespace Milliomos
             System.Console.WriteLine(elsoKerdes);
             Console.ResetColor();
             System.Console.WriteLine("Kérlek add meg a válaszod (A/B/C/D (a válaszod lehet kicsbetus vagy nagy is)):");
-            string valasz ="";
+            string valasz = "";
             bool validInput = false;
-            while(!validInput){
+            while (!validInput)
+            {
                 valasz = Console.ReadLine().ToLower().Trim();
-                if(valasz == "a" || valasz == "b" || valasz == "c" || valasz == "d"){
+                if (valasz == "a" || valasz == "b" || valasz == "c" || valasz == "d")
+                {
                     if (valasz != elsoKerdes.helyesValasz.ToLower())
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -77,16 +80,64 @@ namespace Milliomos
                         validInput = true;
                     }
                 }
-                    else
-                    {
-                        Console.WriteLine("Kérlek válassz egy érvényes lehetőséget (A/B/C/D)");
-                    }
+                else
+                {
+                    Console.WriteLine("Kérlek válassz egy érvényes lehetőséget (A/B/C/D)");
                 }
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                elsoSor();
                 Console.ForegroundColor = ConsoleColor.Green;
                 System.Console.WriteLine("Helyes válasz!");
                 Console.ResetColor();
+                System.Console.WriteLine("Most egy gyakorló sorkérdést fogsz kapni, amire válaszolnod kell. Addig nem mehetsz tovább, ameddig a helyes választ meg nem adod.");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                System.Console.WriteLine($"A tutoriál {10 - i} másodperc múlva kezdődik...");
+                Thread.Sleep(1000);
+            }
+            tutorialSorkerdes();
+                        
         }
-        static Kerdes randomKerdes(int nehezseg){
+        static void tutorialSorkerdes()
+        {
+            elsoSor();
+            System.Console.WriteLine("A kérdésed és a hozzá tartozó válaszok:");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Sorkerdes elsoSorkerdes = randomSorkerdes();
+            Console.ResetColor();
+            System.Console.WriteLine("A válaszodat ilyen formában kell megadnod (kis/nagy betü nem számít): ABCD");
+            string valasz = "";
+            bool validInput = false;
+            while (!validInput)
+            {
+                valasz = Console.ReadLine().ToLower().Trim();
+                if (valasz == "hint")
+                {
+                    System.Console.WriteLine(elsoSorkerdes.helyesValasz);
+                }
+                if (valasz.Length == 4 && valasz.Distinct().Count() == 4 && valasz.All(c => "abcd".Contains(c)))
+                {
+                    if (valasz != elsoSorkerdes.helyesValasz.ToLower())
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        System.Console.WriteLine($"Helytelen válasz! Kérlek adj meg egy másikat a tutoriál befejezése kedvéért");
+                        Console.ResetColor();
+                    }
+
+                    else
+                    {
+                        validInput = true;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Kérlek válassz egy érvényes lehetőséget ");
+                }
+            }
+        }
+        static Kerdes randomKerdes(int nehezseg)
+        {
             if (nehezseg < 1 || nehezseg > 15)
             {
                 throw new ArgumentOutOfRangeException("A nehézségnek 1 és 15 között kell lennie.");
