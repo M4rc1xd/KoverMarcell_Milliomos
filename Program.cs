@@ -49,7 +49,7 @@ namespace Milliomos
             Console.ForegroundColor = ConsoleColor.Yellow;
             System.Console.WriteLine(kerdes);
             Console.ResetColor();
-            
+
             string valasz = "";
             while (true)
             {
@@ -82,7 +82,7 @@ namespace Milliomos
                     Console.WriteLine($"A játék {5 - i} másodperc múlva kezdődik");
                     Thread.Sleep(1000);
                 }
-                jatek();
+                jatek(1);
             }
             else
             {
@@ -92,23 +92,77 @@ namespace Milliomos
             }
 
         }
-        static void jatek()
+        static void jatek(int kerdesSzam)
         {
-            int kerdesSzam = 1;
             elsoSor();
-            System.Console.WriteLine($"Elérkeztünk a(z) {kerdesSzam}. kérdéshez. A tét: {nyeremenyek[kerdesSzam - 1].ToString("N0")} Ft");
-            Kerdes elsoKerdes = randomKerdes(kerdesSzam);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            System.Console.WriteLine(elsoKerdes);
-            Console.ResetColor();
-            System.Console.Write("Válaszod: ");
+            if (kerdesSzam == 15)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                System.Console.Write($"Gratulálok, megnyerted a fődíjat, ami {nyeremenyek[14].ToString("N0")} Ft");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                System.Console.WriteLine($"{nyeremenyek[kerdesSzam - 1].ToString("N0")} Ft");
+                Environment.Exit(0);
+            }
+            else
+            {
+                Kerdes kerdes = randomKerdes(kerdesSzam);
+                kerdesMukodes(kerdes, kerdesSzam);
+            }
+            
 
         }
-        static int kerdesMukodes(Kerdes kerdes, int kerdesSzam)
+        static void kerdesMukodes(Kerdes kerdes, int kerdesSzam)
         {
+            elsoSor();
+            System.Console.WriteLine($"Elérkeztünk a(z) {kerdesSzam}. kérdéshez. A tét: {nyeremenyek[kerdesSzam - 1].ToString("N0")} Ft");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine(kerdes);
+            Console.ResetColor();
+            string valasz = "";
+            while (true)
+            {
+                Console.Write("Válaszod: ");
+                valasz = Console.ReadLine().ToLower().Trim();
 
-            kerdesSzam++;
-            return kerdesSzam;
+                if (valasz == "hint")
+                {
+                    Console.WriteLine(kerdes.helyesValasz);
+                }
+                else if (valasz == kerdes.helyesValasz.ToLower())
+                {
+                    break;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (valasz == kerdes.helyesValasz.ToLower())
+            {
+                elsoSor();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Helyes válasz!");
+                Console.ResetColor();
+                kerdesSzam++;
+            }
+            else
+            {
+                elsoSor();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Helytelen válasz! A játék véget ért.");
+                Console.ForegroundColor = ConsoleColor.Green;
+                if (kerdesSzam > 5)
+                {
+                    Console.WriteLine($"A nyereményed: {nyeremenyek[4].ToString("N0")} Ft");
+                }
+                else if (kerdesSzam > 10)
+                {
+                    Console.WriteLine($"A nyereményed: {nyeremenyek[9].ToString("N0")} Ft");
+                }
+                Environment.Exit(0);
+            }
+            jatek(kerdesSzam);
         }
         static void tutorialKerdes()
         {
