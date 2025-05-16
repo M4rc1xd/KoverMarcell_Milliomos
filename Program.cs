@@ -13,13 +13,9 @@ namespace Milliomos
         static void Main(string[] args)
         {
             fajlBeolvasasok();
-            Jatek();
+            bevezetes();
         }
-
-        static void Jatek(){
-            Bevezetes();
-        }
-        static void Bevezetes()
+        static void bevezetes()
         {
             elsoSor();
             Console.WriteLine("Meg szeretnéd csinálni a tutorialt? (I/N)");
@@ -42,10 +38,39 @@ namespace Milliomos
                     Console.WriteLine("Kérlek válassz egy érvényes lehetőséget (I/N)");
                 }
             }
+            jatekBevezetes();
         }
         static void jatekBevezetes()
         {
-            
+            elsoSor();
+            System.Console.WriteLine("A játék egy sorkérdéssel indul, ha nem sikerül sajnos nem vehetsz részt a játékban");
+            System.Console.WriteLine("A kérdésed és a hozzá tartozó válaszok:");
+            Sorkerdes kerdes = randomSorkerdes();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine(kerdes);
+            Console.ResetColor();
+            System.Console.Write("Válaszod: ");
+            string valasz = Console.ReadLine().ToLower().Trim();
+            if (valasz == kerdes.helyesValasz.ToLower())
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    elsoSor();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    System.Console.WriteLine("Helyes válasz!");
+                    Console.ResetColor();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    System.Console.WriteLine($"A játék {5 - i} másodperc múlva kezdődik");
+                    Thread.Sleep(1000);
+                }
+                // jatek();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine("Helytelen válasz! A játék véget ért.");
+                Console.ResetColor();
+            }
         }
         static void tutorialKerdes()
         {
@@ -93,7 +118,7 @@ namespace Milliomos
                     Console.WriteLine("Kérlek válassz egy érvényes lehetőséget (A/B/C/D)");
                 }
             }
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 elsoSor();
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -101,7 +126,7 @@ namespace Milliomos
                 Console.ResetColor();
                 System.Console.WriteLine("Most egy gyakorló sorkérdést fogsz kapni, amire válaszolnod kell. Addig nem mehetsz tovább, ameddig a helyes választ meg nem adod.");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                System.Console.WriteLine($"A tutoriál {10 - i} másodperc múlva folytatódik");
+                System.Console.WriteLine($"A tutoriál {5 - i} másodperc múlva folytatódik");
                 Thread.Sleep(1000);
             }
             tutorialSorkerdes();
@@ -111,8 +136,9 @@ namespace Milliomos
         {
             elsoSor();
             System.Console.WriteLine("A kérdésed és a hozzá tartozó válaszok:");
-            Console.ForegroundColor = ConsoleColor.Yellow;
             Sorkerdes elsoSorkerdes = randomSorkerdes();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine(elsoSorkerdes);
             Console.ResetColor();
             System.Console.WriteLine("A válaszodat ilyen formában kell megadnod (kis/nagy betü nem számít): ABCD");
             string valasz = "";
