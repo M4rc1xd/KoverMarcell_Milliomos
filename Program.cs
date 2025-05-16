@@ -9,6 +9,7 @@ namespace Milliomos
         static Random r = new Random();
         static List<Kerdes> kerdesek = new List<Kerdes>();
         static List<Sorkerdes> sorkerdesek = new List<Sorkerdes>();
+        static List<int> nyeremenyek = new List<int> { 10000, 20000, 50000, 100000, 250000, 500000, 750000, 1000000, 1500000, 2000000, 5000000, 10000000, 15000000, 25000000, 50000000 };
         static void Main(string[] args)
         {
             fajlBeolvasasok();
@@ -24,21 +25,28 @@ namespace Milliomos
             Console.WriteLine("Meg szeretnéd csinálni a tutorialt? (I/N)");
             bool validInput = false;
             string valasz = "";
-            while(!validInput){
+            while (!validInput)
+            {
                 valasz = Console.ReadLine().ToLower().Trim();
-                if(valasz == "i"){
+                if (valasz == "i")
+                {
                     validInput = true;
                     tutorialKerdes();
                 }
-                else if(valasz == "n"){
+                else if (valasz == "n")
+                {
                     validInput = true;
                 }
-                else{
+                else
+                {
                     Console.WriteLine("Kérlek válassz egy érvényes lehetőséget (I/N)");
                 }
             }
         }
-
+        static void jatekBevezetes()
+        {
+            
+        }
         static void tutorialKerdes()
         {
             elsoSor();
@@ -93,11 +101,11 @@ namespace Milliomos
                 Console.ResetColor();
                 System.Console.WriteLine("Most egy gyakorló sorkérdést fogsz kapni, amire válaszolnod kell. Addig nem mehetsz tovább, ameddig a helyes választ meg nem adod.");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                System.Console.WriteLine($"A tutoriál {10 - i} másodperc múlva kezdődik...");
+                System.Console.WriteLine($"A tutoriál {10 - i} másodperc múlva folytatódik");
                 Thread.Sleep(1000);
             }
             tutorialSorkerdes();
-                        
+
         }
         static void tutorialSorkerdes()
         {
@@ -134,6 +142,56 @@ namespace Milliomos
                 {
                     Console.WriteLine("Kérlek válassz egy érvényes lehetőséget ");
                 }
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                elsoSor();
+                Console.ForegroundColor = ConsoleColor.Green;
+                System.Console.WriteLine("Helyes válasz!");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                System.Console.WriteLine($"A tutoriál {5 - i} másodperc múlva folytatódik");
+                Thread.Sleep(1000);
+            }
+            tutorialInformacio();
+        }
+        static void tutorialInformacio()
+        {
+            elsoSor();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine("A játék menete:");
+            Console.ResetColor();
+            System.Console.WriteLine("A játék során 15 mindig nehezedõ kérdésekre kell válaszolnod, mindig növekvõ Pénz nyereményekért.");
+            System.Console.WriteLine("A nyeremények a következõk:");
+            for (int i = 0; i < nyeremenyek.Count / 5; i++)
+            {
+                Console.Write($"{i * 5 + 1}. kérdés: {nyeremenyek[i * 5].ToString("N0")} Ft".PadRight(30));
+                Console.Write($"{i * 5 + 2}. kérdés: {nyeremenyek[i * 5 + 1].ToString("N0")} Ft".PadRight(30));
+                Console.Write($"{i * 5 + 3}. kérdés: {nyeremenyek[i * 5 + 2].ToString("N0")} Ft".PadRight(30));
+                Console.Write($"{i * 5 + 4}. kérdés: {nyeremenyek[i * 5 + 3].ToString("N0")} Ft".PadRight(30));
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"{i * 5 + 5}. kérdés: {nyeremenyek[i * 5 + 4].ToString("N0")} Ft".PadRight(30));
+                Console.ResetColor();
+            }
+            System.Console.WriteLine("A sárgával jelölt kérdések garantált nyereményhatárokat jeleznek amiket már nem lehet elveszíteni.");
+            System.Console.WriteLine("Tehát a ha a játékos túlmegy az 5. kérdésen, már nem távozhat üres kézzel.");
+            System.Console.WriteLine("A játék során megállásra is lesz lehetõség, ez biztosítja az eddig megszerzett pénzt, de a játék számodra véget fog térni");
+            Thread.Sleep(10000);
+            elsoSor();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine("A játék során 4 segédeszköz áll rendelkezésedre, de ebbõl csak hármat használhatsz:");
+            Console.ResetColor();
+            System.Console.WriteLine("1. 50:50 - Két válasz lehetõséget eltüntet a helyes válaszon kívül");
+            System.Console.WriteLine("2. Közönség segítsége - A közönség 4 válaszlehetõségbõl választ, hogy szerintük melyik a helyes válasz. Ezzel a válaszok százalékait fogod látni");
+            System.Console.WriteLine("3. Telefonos segítség - Két válasz lehetõséget eltüntet a helyes válaszon kívül");
+            System.Console.WriteLine("4. müsorvezetõ - Két válasz lehetõséget eltüntet a helyes válaszon kívül");
+            Thread.Sleep(10000);
+            for (int i = 0; i < 5; i++)
+            {
+                elsoSor();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                System.Console.WriteLine($"A tutoriál {5 - i} másodperc múlva befejezõdik");
+                Thread.Sleep(1000);
             }
         }
         static Kerdes randomKerdes(int nehezseg)
