@@ -44,10 +44,47 @@ namespace Milliomos
             Console.ForegroundColor = ConsoleColor.Green;
             System.Console.WriteLine("Tutorial elindítva");
             Console.ResetColor();
-            System.Console.WriteLine("A játék egyszerű: 2 fajta kérdés van: sima kérdés és sorkérdés");
-            System.Console.WriteLine("A sima kérdésnél 4 válasz közül kell választani, a sorkérdésnél pedig 4 válasz közül kell kiválasztani a helyes sorrendet");
-            System.Console.WriteLine("Most egy gyakorló kérdést fogsz kapni, amire válaszolnod kell. Addig nem mehetsz tovább, ameddig a helyes választ meg nem adod.");
-            System.Console.WriteLine(randomKerdes(15));
+            for (int i = 0; i < 10; i++)
+            {
+                elsoSor();
+                System.Console.WriteLine("A játék egyszerű: 2 fajta kérdés van: sima kérdés és sorkérdés");
+                System.Console.WriteLine("A sima kérdésnél 4 válasz közül kell választani, a sorkérdésnél pedig 4 válasz közül kell kiválasztani a helyes sorrendet");
+                System.Console.WriteLine("Most egy gyakorló kérdést fogsz kapni, amire válaszolnod kell. Addig nem mehetsz tovább, ameddig a helyes választ meg nem adod.");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                System.Console.WriteLine($"A tutoriál {10 - i} másodperc múlva kezdődik...");
+                Thread.Sleep(1000);
+            }
+            elsoSor();
+            System.Console.WriteLine("A kérdésed és a hozzá tartozó válaszok:");
+            Kerdes elsoKerdes = randomKerdes(15);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine(elsoKerdes);
+            Console.ResetColor();
+            System.Console.WriteLine("Kérlek add meg a válaszod (A/B/C/D (a válaszod lehet kicsbetus vagy nagy is)):");
+            string valasz ="";
+            bool validInput = false;
+            while(!validInput){
+                valasz = Console.ReadLine().ToLower().Trim();
+                if(valasz == "a" || valasz == "b" || valasz == "c" || valasz == "d"){
+                    if (valasz != elsoKerdes.helyesValasz.ToLower())
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        System.Console.WriteLine("Helytelen válasz! Kérlek adj meg egy másikat a tutoriál befejezése kedvéért.");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        validInput = true;
+                    }
+                }
+                    else
+                    {
+                        Console.WriteLine("Kérlek válassz egy érvényes lehetőséget (A/B/C/D)");
+                    }
+                }
+                Console.ForegroundColor = ConsoleColor.Green;
+                System.Console.WriteLine("Helyes válasz!");
+                Console.ResetColor();
         }
         static Kerdes randomKerdes(int nehezseg){
             if (nehezseg < 1 || nehezseg > 15)
@@ -87,6 +124,7 @@ namespace Milliomos
         }
         static void elsoSor(){
             Console.Clear();
+            Console.ResetColor();
             Console.WriteLine("#################################");
             Console.WriteLine("#  EZ A LEGYEN ÖN IS MILLIOMOS! #");
             Console.WriteLine("#################################");
