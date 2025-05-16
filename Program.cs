@@ -47,7 +47,19 @@ namespace Milliomos
             System.Console.WriteLine("A játék egyszerű: 2 fajta kérdés van: sima kérdés és sorkérdés");
             System.Console.WriteLine("A sima kérdésnél 4 válasz közül kell választani, a sorkérdésnél pedig 4 válasz közül kell kiválasztani a helyes sorrendet");
             System.Console.WriteLine("Most egy gyakorló kérdést fogsz kapni, amire válaszolnod kell. Addig nem mehetsz tovább, ameddig a helyes választ meg nem adod.");
-            
+            System.Console.WriteLine(randomKerdes(15));
+        }
+        static Kerdes randomKerdes(int nehezseg){
+            if (nehezseg < 1 || nehezseg > 15)
+            {
+                throw new ArgumentOutOfRangeException("A nehézségnek 1 és 15 között kell lennie.");
+            }
+            List<Kerdes> szurtKerdesek = kerdesek.FindAll(k => k.nehezseg == nehezseg);
+            return szurtKerdesek[r.Next(0, szurtKerdesek.Count)];
+        }
+        static Sorkerdes randomSorkerdes(){
+            int index = r.Next(0, sorkerdesek.Count);
+            return sorkerdesek[index];
         }
         static void fajlBeolvasasok(){
             string fajlnev = "kerdesek.txt";
