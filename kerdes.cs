@@ -17,7 +17,7 @@ namespace Milliomos
         }
         public override string ToString()
         {
-            return $"{kerdes}: A:{valasz1} B:{valasz2} C:{valasz3} D:{valasz4}";
+            return $"{kerdes}: A:{valaszok[0]} B:{valaszok[1]} C:{valaszok[2]} D:{valaszok[3]}";
         }
     }
 }
