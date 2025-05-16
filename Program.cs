@@ -49,28 +49,66 @@ namespace Milliomos
             Console.ForegroundColor = ConsoleColor.Yellow;
             System.Console.WriteLine(kerdes);
             Console.ResetColor();
-            System.Console.Write("Válaszod: ");
-            string valasz = Console.ReadLine().ToLower().Trim();
+            
+            string valasz = "";
+            while (true)
+            {
+                Console.Write("Válaszod: ");
+                valasz = Console.ReadLine().ToLower().Trim();
+
+                if (valasz == "hint")
+                {
+                    Console.WriteLine(kerdes.helyesValasz);
+                }
+                else if (valasz == kerdes.helyesValasz.ToLower())
+                {
+                    break;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
             if (valasz == kerdes.helyesValasz.ToLower())
             {
                 for (int i = 0; i < 5; i++)
                 {
                     elsoSor();
                     Console.ForegroundColor = ConsoleColor.Green;
-                    System.Console.WriteLine("Helyes válasz!");
+                    Console.WriteLine("Helyes válasz!");
                     Console.ResetColor();
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    System.Console.WriteLine($"A játék {5 - i} másodperc múlva kezdődik");
+                    Console.WriteLine($"A játék {5 - i} másodperc múlva kezdődik");
                     Thread.Sleep(1000);
                 }
-                // jatek();
+                jatek();
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                System.Console.WriteLine("Helytelen válasz! A játék véget ért.");
+                Console.WriteLine("Helytelen válasz! A játék véget ért.");
                 Console.ResetColor();
             }
+
+        }
+        static void jatek()
+        {
+            int kerdesSzam = 1;
+            elsoSor();
+            System.Console.WriteLine($"Elérkeztünk a(z) {kerdesSzam}. kérdéshez. A tét: {nyeremenyek[kerdesSzam - 1].ToString("N0")} Ft");
+            Kerdes elsoKerdes = randomKerdes(kerdesSzam);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine(elsoKerdes);
+            Console.ResetColor();
+            System.Console.Write("Válaszod: ");
+
+        }
+        static int kerdesMukodes(Kerdes kerdes, int kerdesSzam)
+        {
+
+            kerdesSzam++;
+            return kerdesSzam;
         }
         static void tutorialKerdes()
         {
@@ -229,11 +267,13 @@ namespace Milliomos
             List<Kerdes> szurtKerdesek = kerdesek.FindAll(k => k.nehezseg == nehezseg);
             return szurtKerdesek[r.Next(0, szurtKerdesek.Count)];
         }
-        static Sorkerdes randomSorkerdes(){
+        static Sorkerdes randomSorkerdes()
+        {
             int index = r.Next(0, sorkerdesek.Count);
             return sorkerdesek[index];
         }
-        static void fajlBeolvasasok(){
+        static void fajlBeolvasasok()
+        {
             string fajlnev = "kerdesek.txt";
             KerdesBeolvasas(fajlnev, kerdesek);
             string fajlnev2 = "sorkerdesek.txt";
@@ -242,7 +282,7 @@ namespace Milliomos
         static void KerdesBeolvasas(string fajlnev, List<Kerdes> kerdesek)
         {
             StreamReader sr = new(fajlnev);
-            while(!sr.EndOfStream)
+            while (!sr.EndOfStream)
             {
                 string[] sor = sr.ReadLine().Split(';');
                 kerdesek.Add(new Kerdes(int.Parse(sor[0]), sor[1], sor[2], sor[3], sor[4], sor[5], sor[6], sor[7]));
@@ -251,13 +291,14 @@ namespace Milliomos
         static void SorkerdesBeolvasas(string fajlnev, List<Sorkerdes> sorkerdesek)
         {
             StreamReader sr = new(fajlnev);
-            while(!sr.EndOfStream)
+            while (!sr.EndOfStream)
             {
                 string[] sor = sr.ReadLine().Split(';');
                 sorkerdesek.Add(new Sorkerdes(sor[0], sor[1], sor[2], sor[3], sor[4], sor[5], sor[6]));
             }
         }
-        static void elsoSor(){
+        static void elsoSor()
+        {
             Console.Clear();
             Console.ResetColor();
             Console.WriteLine("#################################");
