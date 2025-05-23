@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading;
 
 namespace Milliomos
 {
@@ -108,16 +110,21 @@ namespace Milliomos
                 Kerdes kerdes = randomKerdes(kerdesSzam);
                 kerdesMukodes(kerdes, kerdesSzam);
             }
-            
+
 
         }
         static void kerdesMukodes(Kerdes kerdes, int kerdesSzam)
         {
+            bool otvenOtven = false;
+            bool telefon = false;
+            bool musorvezeto = false;
+            int hasznaltSegitsegek = 0;
             elsoSor();
             if (kerdesSzam > 1)
             {
                 System.Console.WriteLine($"jelenlegi nyereményed: {nyeremenyek[kerdesSzam - 2].ToString("N0")} Ft");
-            };
+            }
+            ;
             System.Console.WriteLine($"Elérkeztünk a(z) {kerdesSzam}. kérdéshez. A tét: {nyeremenyek[kerdesSzam - 1].ToString("N0")} Ft");
             Console.ForegroundColor = ConsoleColor.Yellow;
             System.Console.WriteLine(kerdes);
@@ -132,12 +139,77 @@ namespace Milliomos
                 {
                     Console.WriteLine(kerdes.helyesValasz);
                 }
-                else if (valasz =="stop" && kerdesSzam > 1)
+                else if (valasz == "stop" && kerdesSzam > 1)
                 {
                     elsoSor();
                     Console.ForegroundColor = ConsoleColor.Green;
                     System.Console.WriteLine($"A játék véget ért, a nyereményed: {nyeremenyek[kerdesSzam - 2].ToString("N0")} Ft");
                     Environment.Exit(0);
+                }
+                else if (valasz == "hintek")
+                {
+                    if (hasznaltSegitsegek >= 2)
+                    {
+                        System.Console.WriteLine("Sajnos már felhasználtad az összes segédeszközt.");
+                    }
+                    else
+                    {
+                        System.Console.WriteLine($"Ezek a segédeszközök állnak rendelkezésedre. Ebböl {2-hasznaltSegitsegek}-t tudsz használni:");
+                        if (!otvenOtven)
+                        {
+                            System.Console.WriteLine("50:50");
+                        }
+                        if (!telefon)
+                        {
+                            System.Console.WriteLine("telefon");
+                        }
+                        if (!musorvezeto)
+                        {
+                            System.Console.WriteLine("musorvezeto");
+                        }
+                    }
+                }
+                else if (valasz == "50:50" && hasznaltSegitsegek < 2 && !otvenOtven)
+                {
+                    hasznaltSegitsegek++;
+                    otvenOtven = true;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    System.Console.WriteLine("Az 50:50 segédeszköz felhasználásra került.");
+                    System.Console.WriteLine("Az alábbi válaszlehetőségek maradtak:");
+                    Console.ResetColor();
+                    string[] valaszok = new[] { "a", "b", "c", "d" };
+                    List<string> nemJo = new List<string>(valaszok);
+                    nemJo.Remove(kerdes.helyesValasz.ToLower());
+                    int randomMasodiValsz = r.Next(0, nemJo.Count);
+                    System.Console.WriteLine($"A kettö lehetséges válasz: {kerdes.helyesValasz.ToUpper()} és {nemJo[randomMasodiValsz].ToUpper()}");
+                }
+                else if (valasz == "telefon" && hasznaltSegitsegek < 2 && !telefon)
+                {
+                    hasznaltSegitsegek++;
+                    telefon = true;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    System.Console.WriteLine("A telefon segédeszköz felhasználásra került.");
+                    System.Console.WriteLine("Az alábbi válaszlehetőségek maradtak:");
+                    Console.ResetColor();
+                    string[] valaszok = new[] { "a", "b", "c", "d" };
+                    List<string> nemJo = new List<string>(valaszok);
+                    nemJo.Remove(kerdes.helyesValasz.ToLower());
+                    int randomMasodiValsz = r.Next(0, nemJo.Count);
+                    System.Console.WriteLine($"A kettö lehetséges válasz: {kerdes.helyesValasz.ToUpper()} és {nemJo[randomMasodiValsz].ToUpper()}");
+                }
+                else if (valasz == "musorvezeto" && hasznaltSegitsegek < 2 && !musorvezeto)
+                {
+                    hasznaltSegitsegek++;
+                    musorvezeto = true;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    System.Console.WriteLine("Az 50:50 segédeszköz felhasználásra került.");
+                    System.Console.WriteLine("Az alábbi válaszlehetőségek maradtak:");
+                    Console.ResetColor();
+                    string[] valaszok = new[] { "a", "b", "c", "d" };
+                    List<string> nemJo = new List<string>(valaszok);
+                    nemJo.Remove(kerdes.helyesValasz.ToLower());
+                    int randomMasodiValsz = r.Next(0, nemJo.Count);
+                    System.Console.WriteLine($"A kettö lehetséges válasz: {kerdes.helyesValasz.ToUpper()} és {nemJo[randomMasodiValsz].ToUpper()}");
                 }
                 else if (valasz == "a" || valasz == "b" || valasz == "c" || valasz == "d")
                 {
@@ -300,16 +372,15 @@ namespace Milliomos
             }
             System.Console.WriteLine("A sárgával jelölt kérdések garantált nyereményhatárokat jeleznek amiket már nem lehet elveszíteni.");
             System.Console.WriteLine("Tehát a ha a játékos túlmegy az 5. kérdésen, már nem távozhat üres kézzel.");
-            System.Console.WriteLine("A játék során megállásra is lesz lehetõség, ez biztosítja az eddig megszerzett pénzt, de a játék számodra véget fog térni");
+            System.Console.WriteLine("A játék során megállásra is lesz lehetõség, ez biztosítja az eddig megszerzett pénzt, de a játék számodra véget fog térni. Ezt a \"stop\" szoval tudod megtenni.");
             Thread.Sleep(10000);
             elsoSor();
             Console.ForegroundColor = ConsoleColor.Yellow;
-            System.Console.WriteLine("A játék során 4 segédeszköz áll rendelkezésedre, de ebbõl csak hármat használhatsz:");
+            System.Console.WriteLine("A játék során 3 segédeszköz áll rendelkezésedre, de ebbõl csak kettöt használhatsz. Ezeket a \"\" körülvett szavak beírásával tudod használni:");
             Console.ResetColor();
-            System.Console.WriteLine("1. 50:50 - Két válasz lehetõséget eltüntet a helyes válaszon kívül");
-            System.Console.WriteLine("2. Közönség segítsége - A közönség 4 válaszlehetõségbõl választ, hogy szerintük melyik a helyes válasz. Ezzel a válaszok százalékait fogod látni");
-            System.Console.WriteLine("3. Telefonos segítség - Két válasz lehetõséget eltüntet a helyes válaszon kívül");
-            System.Console.WriteLine("4. müsorvezetõ - Két válasz lehetõséget eltüntet a helyes válaszon kívül");
+            System.Console.WriteLine("1. \"50:50\" - Két válasz lehetõséget eltüntet a helyes válaszon kívül");
+            System.Console.WriteLine("2. \"telefon\" Telefonos segítség - Két válasz lehetõséget eltüntet a helyes válaszon kívül");
+            System.Console.WriteLine("3. \"musorvezeto\" müsorvezetõ - Két válasz lehetõséget eltüntet a helyes válaszon kívül");
             Thread.Sleep(10000);
             for (int i = 0; i < 5; i++)
             {
