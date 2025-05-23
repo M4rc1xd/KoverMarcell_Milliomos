@@ -114,6 +114,10 @@ namespace Milliomos
         static void kerdesMukodes(Kerdes kerdes, int kerdesSzam)
         {
             elsoSor();
+            if (kerdesSzam > 1)
+            {
+                System.Console.WriteLine($"jelenlegi nyereményed: {nyeremenyek[kerdesSzam - 2].ToString("N0")} Ft");
+            };
             System.Console.WriteLine($"Elérkeztünk a(z) {kerdesSzam}. kérdéshez. A tét: {nyeremenyek[kerdesSzam - 1].ToString("N0")} Ft");
             Console.ForegroundColor = ConsoleColor.Yellow;
             System.Console.WriteLine(kerdes);
@@ -128,11 +132,14 @@ namespace Milliomos
                 {
                     Console.WriteLine(kerdes.helyesValasz);
                 }
-                else if (valasz == kerdes.helyesValasz.ToLower())
+                else if (valasz =="stop" && kerdesSzam > 1)
                 {
-                    break;
+                    elsoSor();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    System.Console.WriteLine($"A játék véget ért, a nyereményed: {nyeremenyek[kerdesSzam - 2].ToString("N0")} Ft");
+                    Environment.Exit(0);
                 }
-                else
+                else if (valasz == "a" || valasz == "b" || valasz == "c" || valasz == "d")
                 {
                     break;
                 }
